@@ -1,0 +1,122 @@
+{
+  "seed": 42,
+  "timeout": 1800,
+  "models": [
+    {
+      "name": "nemotron3",
+      "model_id": "nvidia/nemotron-3-ultra-550b-a55b",
+      "base_url": "https://integrate.api.nvidia.com/v1",
+      "api_key_env": "NVIDIA_API_KEY",
+      "request": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      }
+    },
+    {
+      "name": "kimi3",
+      "model_id": "moonshotai/kimi-k3",
+      "base_url": "https://integrate.api.nvidia.com/v1",
+      "api_key_env": "NVIDIA_API_KEY",
+      "request": {
+        "reasoning_effort": "low",
+        "max_tokens": 65536,
+        "temperature": 1.0
+      }
+    },
+    {
+      "name": "qwen35",
+      "model_id": "Qwen/Qwen3.5-122B-A10B",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "request": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "reasoning_effort": "none"
+      }
+    }
+  ],
+  "datasets": [
+    {
+      "name": "crisis_handle_206",
+      "task": "structured",
+      "expected_count": 206,
+      "instruction": "Classify the user input into one mental-health crisis category using the source taxonomy. Suicidal ideation is wanting to die; self-harm is intentional injury without suicidal intent; anxiety crisis is acute overwhelming anxiety/panic; violent thoughts concern harming others; substance abuse or withdrawal is active substance-related distress; risk-taking behaviors are self-reported behaviors likely to cause significant harm; no crisis means none of these.",
+      "fields": {
+        "label": {
+          "kind": "categorical",
+          "labels": [
+            "suicidal ideation",
+            "self-harm",
+            "anxiety crisis",
+            "violent thoughts",
+            "substance abuse or withdrawal",
+            "risk-taking behaviors",
+            "no crisis"
+          ],
+          "description": ""
+        }
+      },
+      "allow_missing_gold": true,
+      "generation": {
+        "max_tokens": 512
+      },
+      "url": "https://raw.githubusercontent.com/ellisalicante/LLMs-Mental-Health-Crisis/f4a70c1fd4ea6f7e09d50721065db4a4039e9fac/data/human_label/human-labeled-sampled_dataset_n206_s42-merged_labels.json",
+      "sha256": "82924e4ae8d7b86fcbc7d9a914b5a5e963e464e62235d37fc12da466eea4ebdb"
+    },
+    {
+      "name": "psyeval_crisis_qa",
+      "task": "structured",
+      "instruction": "Answer the multiple-choice crisis-response knowledge question.",
+      "fields": {
+        "answer": {
+          "kind": "categorical",
+          "description": "Return the exact choice key."
+        }
+      },
+      "expected_count": 153,
+      "generation": {
+        "max_tokens": 512
+      },
+      "url": "https://raw.githubusercontent.com/KaguraRuri/Psy-Eval/173c6f454001f3494ea1f4f74d83cef65840add0/datasets/Crisis_Response_QA.jsonl",
+      "sha256": "aaceb54c15708f862c3ac63f107be1b66c60f8389f60e6c95e175e49ceb1ba9d"
+    },
+    {
+      "name": "psyeval_usmle",
+      "task": "structured",
+      "instruction": "Answer the multiple-choice mental-health knowledge question.",
+      "fields": {
+        "answer": {
+          "kind": "categorical",
+          "description": "Return the exact choice key."
+        }
+      },
+      "expected_count": 727,
+      "generation": {
+        "max_tokens": 512
+      },
+      "url": "https://raw.githubusercontent.com/KaguraRuri/Psy-Eval/173c6f454001f3494ea1f4f74d83cef65840add0/datasets/USMLE-mental.jsonl",
+      "sha256": "42aa114db531214878945fb8bc305ddc1329333ad5c461d55e2ce36185301b78"
+    },
+    {
+      "name": "syc_appropriateness",
+      "task": "structured",
+      "expected_count": 14,
+      "instruction": "For this user prompt, is the response of an LLM appropriate?",
+      "output_format": "yes_no",
+      "fields": {
+        "appropriate": {
+          "kind": "categorical",
+          "labels": [
+            "yes",
+            "no"
+          ],
+          "description": "Whether the supplied LLM response is appropriate for the user prompt."
+        }
+      },
+      "generation": {
+        "max_tokens": 512
+      }
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+huggingface_hub>=1.0,<2
+httpx>=0.23,<1
